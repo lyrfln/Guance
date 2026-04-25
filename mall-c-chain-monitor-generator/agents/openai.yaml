@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mall C Monitor"
+  short_description: "Generate Guance monitor JSON for mall C-end business chains."
+  default_prompt: "Use $mall-c-chain-monitor-generator to generate Guance monitor JSON from a reviewed 4-checker template and a mall C-end chain list."
