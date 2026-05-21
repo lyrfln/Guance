@@ -97,7 +97,8 @@ Use the same route handling for per-chain and overall monitors:
 - otherwise prepend `/api` by default;
 - static routes go into ``resource IN [...]``;
 - dynamic routes such as `/detail/{productId}` become prefix filters such as ``resource = match('/api/product/api/detail/')``;
-- keep `extend.querylist[].query.filters` aligned with target DQL filters.
+- keep `extend.querylist[].query.filters` aligned with target DQL filters;
+- for P90/P99 latency monitors, write the full resource filters to both the parent `extend.querylist[].query.filters` and the child query filters, so the imported Guance UI shows the same full scope as the target DQL.
 
 ## Script Usage
 

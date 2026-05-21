@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 import argparse
 import copy
 import csv
@@ -418,6 +418,7 @@ def build_scope_checkers(template_by_kind, scope, system_name, add_api_prefix=Tr
     if ql:
         ql[0]["uuid"] = make_uuid()
         ql[0]["query"]["q"] = p99_query
+        ql[0]["query"]["filters"] = filters_keyword
         if ql[0]["query"].get("children"):
             ql[0]["query"]["children"][0]["q"] = p99_child
             ql[0]["query"]["children"][0]["filters"] = filters_keyword
@@ -430,6 +431,7 @@ def build_scope_checkers(template_by_kind, scope, system_name, add_api_prefix=Tr
     if ql:
         ql[0]["uuid"] = make_uuid()
         ql[0]["query"]["q"] = p90_query
+        ql[0]["query"]["filters"] = filters_keyword
         if ql[0]["query"].get("children"):
             ql[0]["query"]["children"][0]["q"] = p90_child
             ql[0]["query"]["children"][0]["filters"] = filters_keyword
@@ -579,3 +581,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

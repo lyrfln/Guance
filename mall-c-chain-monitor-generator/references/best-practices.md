@@ -102,3 +102,7 @@ Before customer import:
 ## 10. Keep Bundled Templates De-identified
 
 Do not put real customer interface paths into bundled templates. Use placeholders in template files and keep real customer data only in task-specific working outputs.
+
+## 11. Keep Latency Parent Filters Complete
+
+For P90 and P99 latency monitors, do not update only the child query filters. The parent `extend.querylist[].query.filters` must also contain the full static `resource IN [...]` list and all dynamic `resource = match(...)` prefixes. Otherwise the target DQL may cover all interfaces while the imported UI appears to cover only part of them.
