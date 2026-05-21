@@ -1,0 +1,832 @@
+{
+  "checkers": [
+    {
+      "jsonScript": {
+        "type": "simpleCheck",
+        "every": "5m",
+        "title": "{{project}}产品服务{{service}} 接口{{resource}}响应状态码{{http_status_code}}异常率告警-登录业务",
+        "groupBy": [
+          "project",
+          "env",
+          "service",
+          "resource",
+          "http_status_code"
+        ],
+        "message": "产品：{{project}}\n服务：{{service}}\n接口请求：{{resource}}\n状态码:{{http_status_code}}\n错误率：{{Result}}\n详细分析链接：[查看相关链路](<{{STUDIO_CONSOLE_BASE_URL}}/tracing/link/all?time={{df_check_range_start}},{{df_check_range_end}}&w={{df_workspace_uuid}}&lak=Tracing&query=service:\"{{service}}\" http_status_code:{{http_status_code}} resource:\"{{resource}}\">)\n\n\n",
+        "targets": [
+          {
+            "dql": "eval(a/b, a=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `http_status_group` IN ['4xx', '5xx'] and `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\", b=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\")",
+            "alias": "Result",
+            "qtype": "dql"
+          }
+        ],
+        "channels": [],
+        "interval": 300,
+        "atAccounts": [],
+        "checkerOpt": {
+          "rules": [
+            {
+              "status": "fatal",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "1"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "matchTimes": 1,
+              "conditionLogic": "and"
+            },
+            {
+              "status": "critical",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0.1"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "matchTimes": 1,
+              "conditionLogic": "and"
+            }
+          ],
+          "infoEvent": false,
+          "combineExpr": "A && B",
+          "openMatchTimes": false,
+          "openOkConditions": false,
+          "disableLargeScaleEventProtect": false
+        },
+        "eventCharts": [],
+        "noDataTitle": "",
+        "noDataMessage": "",
+        "atNoDataAccounts": [],
+        "eventChartEnable": false,
+        "disableCheckEndTime": false,
+        "notificationMessage": "",
+        "recoverNeedPeriodCount": 2,
+        "openNotificationMessage": false,
+        "noDataNotificationMessage": "",
+        "openNoDataNotificationMessage": false
+      },
+      "extend": {
+        "rules": [
+          {
+            "status": "fatal",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "1"
+                ],
+                "operator": ">="
+              }
+            ],
+            "matchTimes": 1,
+            "conditionLogic": "and"
+          },
+          {
+            "status": "critical",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0.1"
+                ],
+                "operator": ">="
+              }
+            ],
+            "matchTimes": 1,
+            "conditionLogic": "and"
+          }
+        ],
+        "manager": [],
+        "funcName": "",
+        "querylist": [
+          {
+            "uuid": "f593fe07-1e97-40fe-a07f-bbccd7a6ccb9",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(count_distinct(`trace_id`)) { `http_status_group` IN ['4xx', '5xx'] and `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`",
+              "code": "A",
+              "fill": null,
+              "type": "dql",
+              "alias": "",
+              "field": "trace_id",
+              "index": "default",
+              "limit": null,
+              "fields": [
+                {
+                  "alias": "",
+                  "field": "trace_id",
+                  "fieldFunc": "count_distinct"
+                }
+              ],
+              "slimit": null,
+              "fillNum": null,
+              "filters": [
+                {
+                  "op": "in",
+                  "name": "http_status_group",
+                  "type": "",
+                  "logic": "and",
+                  "value": "",
+                  "values": [
+                    "4xx",
+                    "5xx"
+                  ],
+                  "id": "0d679f0a-fd03-44f0-8327-6b63253254f0"
+                },
+                {
+                  "id": "67717904-6387-481d-bc1b-eecb946f615b",
+                  "op": "in",
+                  "name": "resource",
+                  "type": "",
+                  "logic": "and",
+                  "value": "",
+                  "values": [
+                    "/api/auth/user/login",
+                    "/api/customer/api/login/get"
+                  ]
+                }
+              ],
+              "groupBy": [
+                "project",
+                "env",
+                "service",
+                "resource",
+                "http_status_code"
+              ],
+              "indexes": [
+                "default"
+              ],
+              "labelOp": "",
+              "funcList": [],
+              "interval": "",
+              "fieldFunc": "count_distinct",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "withLabels": [],
+              "groupByTime": "",
+              "indexFilter": "default",
+              "dataSourceFunc": "re"
+            },
+            "disabled": true,
+            "datasource": "dataflux"
+          },
+          {
+            "uuid": "20f31c11-3cdf-4a9b-9bda-3241326beb14",
+            "qtype": "dql",
+            "query": {
+              "q": "T::RE(`.*`):(count_distinct(`trace_id`)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`",
+              "code": "B",
+              "fill": null,
+              "type": "dql",
+              "alias": "",
+              "field": "trace_id",
+              "index": "default",
+              "limit": null,
+              "fields": [
+                {
+                  "alias": "",
+                  "field": "trace_id",
+                  "fieldFunc": "count_distinct"
+                }
+              ],
+              "slimit": null,
+              "fillNum": null,
+              "filters": [
+                {
+                  "id": "ce6bc069-be76-4ce4-a22e-13af3c335889",
+                  "op": "in",
+                  "name": "resource",
+                  "type": "keyword",
+                  "logic": "and",
+                  "value": "",
+                  "values": [
+                    "/api/auth/user/login",
+                    "/api/customer/api/login/get"
+                  ]
+                }
+              ],
+              "groupBy": [
+                "project",
+                "env",
+                "service",
+                "resource",
+                "http_status_code"
+              ],
+              "indexes": [
+                "default"
+              ],
+              "labelOp": "",
+              "funcList": [],
+              "interval": "",
+              "fieldFunc": "count_distinct",
+              "namespace": "tracing",
+              "dataSource": "*",
+              "queryFuncs": [],
+              "withLabels": [],
+              "groupByTime": "",
+              "indexFilter": "default",
+              "dataSourceFunc": "re"
+            },
+            "disabled": true,
+            "datasource": "dataflux"
+          },
+          {
+            "name": "",
+            "uuid": "9945f829-b971-4a7a-9e4b-6c6b466ddb31",
+            "color": "",
+            "qtype": "dql",
+            "query": {
+              "q": "eval(a/b, a=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `http_status_group` IN ['4xx', '5xx'] and `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\", b=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\")",
+              "code": "C",
+              "fill": null,
+              "type": "expression",
+              "alias": "",
+              "fillNum": null,
+              "children": [],
+              "funcList": [],
+              "expression": "a/b"
+            },
+            "checked": true,
+            "disabled": false,
+            "datasource": "dataflux"
+          }
+        ],
+        "rulesExtend": [],
+        "incidentsTags": [],
+        "issueLevelUUID": "",
+        "needRecoverIssue": false,
+        "bindIncidentsInfo": [],
+        "isNeedCreateIssue": false,
+        "issueDfStatus": []
+      },
+      "is_disable": false,
+      "tagInfo": [
+        {
+          "name": "傲雷商城"
+        }
+      ],
+      "secret": "",
+      "type": "trigger",
+      "signId": "a4eca51f35eff360c2f04d35855f2d2e",
+      "monitorName": "default",
+      "alertPolicyNames": []
+    },
+    {
+      "jsonScript": {
+        "type": "apmCheck",
+        "every": "5m",
+        "title": "{{project}}产品服务{{service}}关键业务接口{{resource}}异常错误率告警-登录业务",
+        "groupBy": [
+          "project",
+          "env",
+          "service",
+          "resource"
+        ],
+        "message": "产品：{{project}}\n服务：{{service}}  \n接口：{{resource}} \n错误率：{{Result}}\n{% set dql_data = DQL(\"T::RE(`.*`):(`error_type`,`error_message`,`error_stack`) { `status` = 'error' and `service` = ? and `resource` = ? } \", service, resource) %}\n错误类型：{{ dql_data.error_type}}\n错误消息：{{ dql_data.error_message | limit_lines(10) }}\n错误堆栈：{{ dql_data.error_stack | limit_lines(10) }}\n详细分析链接：[查看相关链路](<{{STUDIO_CONSOLE_BASE_URL}}/tracing/link/all?time={{df_check_range_start}},{{df_check_range_end}}&w={{df_workspace_uuid}}&lak=Tracing&query=service:\"{{service}}\" status:error resource:\"{{resource}}\">)\n",
+        "targets": [
+          {
+            "dql": "eval(A.a1/B.b1,A=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as a1) {`status` = 'error', `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`\",B=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as b1) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`\").fill(0)",
+            "alias": "Result"
+          }
+        ],
+        "channels": [],
+        "interval": 300,
+        "windowDql": "eval(A.a1/B.b1,A=\"<window>T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as a1) {`status` = 'error', `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`</window>\",B=\"<window>T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as b1) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`</window>\").fill(0)",
+        "atAccounts": [],
+        "checkerOpt": {
+          "rules": [
+            {
+              "status": "fatal",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "1"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "matchTimes": 1,
+              "conditionLogic": "and"
+            },
+            {
+              "status": "critical",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0.01"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "matchTimes": 1,
+              "conditionLogic": "and"
+            },
+            {
+              "status": "error",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "0.0001"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "matchTimes": 1,
+              "conditionLogic": "and"
+            }
+          ],
+          "infoEvent": false,
+          "combineExpr": "A && B",
+          "openMatchTimes": false,
+          "disableLargeScaleEventProtect": false
+        },
+        "eventCharts": [],
+        "noDataTitle": "",
+        "noDataMessage": "",
+        "atNoDataAccounts": [],
+        "eventChartEnable": false,
+        "disableCheckEndTime": false,
+        "notificationMessage": "",
+        "recoverNeedPeriodCount": 2,
+        "openNotificationMessage": false,
+        "noDataNotificationMessage": "",
+        "openNoDataNotificationMessage": false
+      },
+      "extend": {
+        "rules": [
+          {
+            "status": "fatal",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "1"
+                ],
+                "operator": ">="
+              }
+            ],
+            "matchTimes": 1,
+            "conditionLogic": "and"
+          },
+          {
+            "status": "critical",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0.01"
+                ],
+                "operator": ">="
+              }
+            ],
+            "matchTimes": 1,
+            "conditionLogic": "and"
+          },
+          {
+            "status": "error",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "0.0001"
+                ],
+                "operator": ">="
+              }
+            ],
+            "matchTimes": 1,
+            "conditionLogic": "and"
+          }
+        ],
+        "uiType": "default",
+        "manager": [],
+        "funcName": "",
+        "querylist": [
+          {
+            "uuid": "a7273232-7de2-44bf-bd94-26a3534511dd",
+            "qtype": "dql",
+            "query": {
+              "q": "eval(A.a1/B.b1,A=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as a1) {`status` = 'error', `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`\",B=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as b1) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`\").fill(0)",
+              "field": "请求错误率",
+              "filters": [
+                {
+                  "id": "201a4c65-44e4-495b-bd38-aa6f6cee4a41",
+                  "op": "in",
+                  "name": "resource",
+                  "type": "field",
+                  "logic": "and",
+                  "value": "",
+                  "values": [
+                    "/api/auth/user/login",
+                    "/api/customer/api/login/get"
+                  ]
+                }
+              ],
+              "groupBy": [
+                "project",
+                "env",
+                "service",
+                "resource"
+              ],
+              "dataSource": [
+                "*"
+              ],
+              "additionalFields": []
+            },
+            "datasource": "dataflux"
+          }
+        ],
+        "rulesExtend": [],
+        "incidentsTags": [],
+        "issueLevelUUID": "",
+        "needRecoverIssue": false,
+        "bindIncidentsInfo": [],
+        "isNeedCreateIssue": false,
+        "issueDfStatus": []
+      },
+      "is_disable": false,
+      "tagInfo": [
+        {
+          "name": "傲雷商城"
+        }
+      ],
+      "secret": "",
+      "type": "trigger",
+      "signId": "95dcabced1546988b804f04174452ff0",
+      "monitorName": "default",
+      "alertPolicyNames": []
+    },
+    {
+      "jsonScript": {
+        "type": "simpleCheck",
+        "every": "5m",
+        "title": "{{project}}产品服务{{service}}关键业务接口{{resource}} P99响应时间连续超过阈值-登录业务",
+        "groupBy": [
+          "project",
+          "env",
+          "service",
+          "resource"
+        ],
+        "message": "产品：{{project}}\n服务：{{service}}\n请求：{{resource}}\nP99响应时间:{{Result|to_fixed(0)}}ms\n详细分析链接：[查看相关链路](<{{STUDIO_CONSOLE_BASE_URL}}/tracing/link/all?time={{df_check_range_start}},{{df_check_range_end}}&w={{df_workspace_uuid}}&lak=Tracing&query=service:\"{{service}}\" resource:\"{{resource}}\">)",
+        "targets": [
+          {
+            "dql": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 99)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`\")",
+            "alias": "Result",
+            "qtype": "dql"
+          }
+        ],
+        "channels": [],
+        "interval": 300,
+        "atAccounts": [],
+        "checkerOpt": {
+          "rules": [
+            {
+              "status": "fatal",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "1000"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "matchTimes": 10,
+              "conditionLogic": "and"
+            },
+            {
+              "status": "critical",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "1000"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "matchTimes": 5,
+              "conditionLogic": "and"
+            }
+          ],
+          "infoEvent": false,
+          "combineExpr": "A && B",
+          "openMatchTimes": true,
+          "openOkConditions": false,
+          "disableLargeScaleEventProtect": false
+        },
+        "eventCharts": [],
+        "noDataTitle": "",
+        "noDataMessage": "",
+        "atNoDataAccounts": [],
+        "eventChartEnable": false,
+        "disableCheckEndTime": false,
+        "notificationMessage": "",
+        "recoverNeedPeriodCount": 2,
+        "openNotificationMessage": false,
+        "noDataNotificationMessage": "",
+        "openNoDataNotificationMessage": false
+      },
+      "extend": {
+        "rules": [
+          {
+            "status": "fatal",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "1000"
+                ],
+                "operator": ">="
+              }
+            ],
+            "matchTimes": 10,
+            "conditionLogic": "and"
+          },
+          {
+            "status": "critical",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "1000"
+                ],
+                "operator": ">="
+              }
+            ],
+            "matchTimes": 5,
+            "conditionLogic": "and"
+          }
+        ],
+        "manager": [],
+        "funcName": "",
+        "querylist": [
+          {
+            "uuid": "184de8df-3fab-4a04-bda0-3f37309daa0f",
+            "qtype": "dql",
+            "query": {
+              "q": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 99)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`\")",
+              "code": "A",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(percentile(`duration`, 99)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`",
+                  "code": "A",
+                  "fill": null,
+                  "type": "simple",
+                  "alias": "",
+                  "field": "duration",
+                  "limit": null,
+                  "fillNum": null,
+                  "filters": [
+                    {
+                      "id": "ce6bc069-be76-4ce4-a22e-13af3c335889",
+                      "op": "in",
+                      "name": "resource",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "",
+                      "values": [
+                        "/api/auth/user/login",
+                        "/api/customer/api/login/get"
+                      ]
+                    }
+                  ],
+                  "groupBy": [
+                    "project",
+                    "env",
+                    "service",
+                    "resource"
+                  ],
+                  "labelOp": "",
+                  "funcList": [],
+                  "fieldFunc": "p99",
+                  "fieldType": "long",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "withLabels": [],
+                  "groupByTime": "",
+                  "indexFilter": "default"
+                }
+              ],
+              "funcList": [],
+              "expression": "A/1000"
+            },
+            "datasource": "dataflux"
+          }
+        ],
+        "rulesExtend": [],
+        "incidentsTags": [],
+        "issueLevelUUID": "",
+        "needRecoverIssue": false,
+        "bindIncidentsInfo": [],
+        "isNeedCreateIssue": false,
+        "issueDfStatus": []
+      },
+      "is_disable": false,
+      "tagInfo": [
+        {
+          "name": "傲雷商城"
+        }
+      ],
+      "secret": "",
+      "type": "trigger",
+      "signId": "dbedc5a5516c51adff593e1f0147cf07",
+      "monitorName": "default",
+      "alertPolicyNames": []
+    },
+    {
+      "jsonScript": {
+        "type": "simpleCheck",
+        "every": "5m",
+        "title": "{{project}}产品服务{{service}}关键业务接口{{resource}} P90响应时间连续超过阈值-登录业务",
+        "groupBy": [
+          "project",
+          "env",
+          "service",
+          "resource"
+        ],
+        "message": "产品：{{project}}\n服务：{{service}}\n请求：{{resource}}\nP90响应时间:{{Result|to_fixed(0)}}ms\n详细分析链接：[查看相关链路](<{{STUDIO_CONSOLE_BASE_URL}}/tracing/link/all?time={{df_check_range_start}},{{df_check_range_end}}&w={{df_workspace_uuid}}&lak=Tracing&query=service:\"{{service}}\" resource:\"{{resource}}\">)",
+        "targets": [
+          {
+            "dql": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 90)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`\")",
+            "alias": "Result",
+            "qtype": "dql"
+          }
+        ],
+        "channels": [],
+        "interval": 300,
+        "atAccounts": [],
+        "checkerOpt": {
+          "rules": [
+            {
+              "status": "fatal",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "500"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "matchTimes": 10,
+              "conditionLogic": "and"
+            },
+            {
+              "status": "critical",
+              "conditions": [
+                {
+                  "alias": "Result",
+                  "operands": [
+                    "500"
+                  ],
+                  "operator": ">="
+                }
+              ],
+              "matchTimes": 5,
+              "conditionLogic": "and"
+            }
+          ],
+          "infoEvent": false,
+          "combineExpr": "A && B",
+          "openMatchTimes": true,
+          "openOkConditions": false,
+          "disableLargeScaleEventProtect": false
+        },
+        "eventCharts": [],
+        "noDataTitle": "",
+        "noDataMessage": "",
+        "atNoDataAccounts": [],
+        "eventChartEnable": false,
+        "disableCheckEndTime": false,
+        "notificationMessage": "",
+        "recoverNeedPeriodCount": 2,
+        "openNotificationMessage": false,
+        "noDataNotificationMessage": "",
+        "openNoDataNotificationMessage": false
+      },
+      "extend": {
+        "rules": [
+          {
+            "status": "fatal",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "500"
+                ],
+                "operator": ">="
+              }
+            ],
+            "matchTimes": 10,
+            "conditionLogic": "and"
+          },
+          {
+            "status": "critical",
+            "conditions": [
+              {
+                "alias": "Result",
+                "operands": [
+                  "500"
+                ],
+                "operator": ">="
+              }
+            ],
+            "matchTimes": 5,
+            "conditionLogic": "and"
+          }
+        ],
+        "manager": [],
+        "funcName": "",
+        "querylist": [
+          {
+            "uuid": "b0f3e47e-de8b-4f0a-8a89-6f2625b237a9",
+            "qtype": "dql",
+            "query": {
+              "q": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 90)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`\")",
+              "code": "A",
+              "type": "expression",
+              "alias": "",
+              "children": [
+                {
+                  "q": "T::RE(`.*`):(percentile(`duration`, 90)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`",
+                  "code": "A",
+                  "fill": null,
+                  "type": "simple",
+                  "alias": "",
+                  "field": "duration",
+                  "limit": null,
+                  "fillNum": null,
+                  "filters": [
+                    {
+                      "id": "ce6bc069-be76-4ce4-a22e-13af3c335889",
+                      "op": "in",
+                      "name": "resource",
+                      "type": "keyword",
+                      "logic": "and",
+                      "value": "",
+                      "values": [
+                        "/api/auth/user/login",
+                        "/api/customer/api/login/get"
+                      ]
+                    }
+                  ],
+                  "groupBy": [
+                    "project",
+                    "env",
+                    "service",
+                    "resource"
+                  ],
+                  "labelOp": "",
+                  "funcList": [],
+                  "fieldFunc": "p90",
+                  "fieldType": "long",
+                  "namespace": "tracing",
+                  "dataSource": "*",
+                  "queryFuncs": [],
+                  "withLabels": [],
+                  "groupByTime": "",
+                  "indexFilter": "default"
+                }
+              ],
+              "funcList": [],
+              "expression": "A/1000"
+            },
+            "datasource": "dataflux"
+          }
+        ],
+        "rulesExtend": [],
+        "incidentsTags": [],
+        "issueLevelUUID": "",
+        "needRecoverIssue": false,
+        "bindIncidentsInfo": [],
+        "isNeedCreateIssue": false,
+        "issueDfStatus": []
+      },
+      "is_disable": false,
+      "tagInfo": [
+        {
+          "name": "傲雷商城"
+        }
+      ],
+      "secret": "",
+      "type": "trigger",
+      "signId": "dbe4f411b5ca58cb0baf80918021a712",
+      "monitorName": "default",
+      "alertPolicyNames": []
+    }
+  ]
+}

@@ -1,4 +1,4 @@
 interface:
-  display_name: "Mall C Monitor"
-  short_description: "Generate Guance monitor JSON for mall C-end business chains."
-  default_prompt: "Use $mall-c-chain-monitor-generator to generate Guance monitor JSON from a reviewed 4-checker template and a mall C-end chain list."
+  display_name: "Business SLI Monitor"
+  short_description: "Generate one Guance monitor JSON for business-chain and overall-system SLI monitors."
+  default_prompt: "Use $mall-c-chain-monitor-generator to generate one Guance monitor JSON from a customer key business interface table, including per-chain and overall business-system SLI monitors, then export and validate DQL."

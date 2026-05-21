@@ -1,74 +1,93 @@
 # Input Schema
 
-The generator expects a JSON file containing a list of chain objects.
+The generator accepts XLSX, CSV, or JSON.
 
-## Required fields
+## Customer Table Columns
 
-Each chain object must contain:
+Ask the customer to provide these columns:
+
+| Required | Column name | Meaning | Example |
+|---:|---|---|---|
+| Yes | `业务系统名称` | Business system name; also the only monitor tag and overall monitor suffix | `傲雷商城` |
+| Yes | `业务链路` | Key business chain name | `登录链路` |
+| Yes | `业务域` | Per-chain monitor suffix | `登录业务` |
+| Yes | `关键接口` | One or more key API resources | `/auth/user/login;/customer/api/login/get` |
+| Yes | `P90阈值(ms)` | P90 latency threshold in ms | `500` |
+| Yes | `P99阈值(ms)` | P99 latency threshold in ms | `1000` |
+| Optional | `HTTP异常率阈值` | HTTP 4xx/5xx anomaly threshold | `1` |
+| Optional | `APM错误率阈值` | APM error-rate threshold | `1` |
+
+Multiple interfaces in `关键接口` may be separated by:
+
+- newlines;
+- `;` or `；`;
+- `,` or `，`.
+
+## JSON Format
+
+Either a list:
 
 ```json
-{
-  "name": "商品浏览链路",
-  "business": "商品浏览业务",
-  "routes": [
-    "/product/api/search",
-    "/product/api/detailInfo",
-    "/product/api/detail/{productId}",
-    "/product/api/categoryNodes"
-  ],
-  "p90_ms": 500,
-  "p99_ms": 1000
-}
+[
+  {
+    "name": "登录链路",
+    "business": "登录业务",
+    "routes": ["/auth/user/login", "/customer/api/login/get"],
+    "p90_ms": 500,
+    "p99_ms": 1000
+  }
+]
 ```
 
-## Field meanings
-
-- `name`: Human-readable chain name.
-- `business`: Business suffix appended to monitor titles.
-- `routes`: Core interface list for this chain.
-- `p90_ms`: Threshold for the P90 latency monitor.
-- `p99_ms`: Threshold for the P99 latency monitor.
-
-## Route normalization
-
-The script normalizes routes like this:
-- `/auth/user/login` becomes `/api/auth/user/login`
-- `/api/auth/user/login` stays unchanged
-
-## Dynamic route rule
-
-If a route contains a placeholder such as `{productId}` or `{orderNo}`, the script:
-- excludes that templated route from the static `IN` list
-- adds a `match('/prefix/')` condition based on the fixed prefix before `{`
-
-Example:
+Or an object:
 
 ```json
 {
-  "routes": [
-    "/product/api/detail/{productId}"
+  "system_name": "傲雷商城",
+  "overall": {
+    "p90_ms": 1000,
+    "p99_ms": 2000,
+    "http_threshold": "1",
+    "error_threshold": "1"
+  },
+  "chains": [
+    {
+      "name": "登录链路",
+      "business": "登录业务",
+      "routes": ["/auth/user/login", "/customer/api/login/get"],
+      "p90_ms": 500,
+      "p99_ms": 1000
+    }
   ]
 }
 ```
 
-Generates:
+## Route Normalization
 
-```text
-`resource` = match('/api/product/api/detail/')
-```
+By default, the script prepends `/api` when the route does not already start with `/api/`.
 
-## Template expectations
+Examples:
 
-The template JSON must contain exactly 4 monitors and follow this order:
+- `/auth/user/login` -> `/api/auth/user/login`
+- `/api/auth/user/login` -> `/api/auth/user/login`
 
-1. HTTP status anomaly rate
-2. APM error rate
-3. P99 latency
-4. P90 latency
+Disable this behavior with `--no-api-prefix` if the customer's `resource` values already match the actual APM resource exactly.
 
-The generator preserves the template style, messages, and most rule structure, then replaces:
-- titles
-- DQL
-- route filters
-- `signId`
-- latency thresholds
+## Dynamic Routes
+
+Dynamic routes are converted to prefix filters.
+
+Examples:
+
+| Input route | Generated filter |
+|---|---|
+| `/product/api/detail/{productId}` | ``resource = match('/api/product/api/detail/')`` |
+| `/order/api/getOrderDetailByOrderNo/{orderNo}` | ``resource = match('/api/order/api/getOrderDetailByOrderNo/')`` |
+
+Supported placeholder styles include `{id}`, `:id`, and `<id>`.
+
+## Threshold Rules
+
+- Per-chain P90/P99 thresholds must be provided by the customer.
+- Overall P90/P99 default to the maximum P90/P99 among all chains unless explicitly provided by CLI or JSON `overall`.
+- HTTP/APM thresholds default to the reviewed template style threshold `1` unless provided by table, JSON, or CLI.

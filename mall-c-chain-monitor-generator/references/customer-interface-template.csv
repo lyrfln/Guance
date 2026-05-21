@@ -1,0 +1,3 @@
+﻿业务系统名称,业务链路,业务域,关键接口,P90阈值(ms),P99阈值(ms),HTTP异常率阈值,APM错误率阈值
+傲雷商城,登录链路,登录业务,"/auth/user/login;/customer/api/login/get",500,1000,1,1
+傲雷商城,商品浏览链路,商品浏览业务,"/product/api/search;/product/api/detailInfo;/product/api/detail/{productId};/product/api/categoryNodes",500,1000,1,1
