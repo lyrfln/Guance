@@ -15,7 +15,7 @@
         "message": "产品：{{project}}\n服务：{{service}}\n接口请求：{{resource}}\n状态码:{{http_status_code}}\n错误率：{{Result}}\n详细分析链接：[查看相关链路](<{{STUDIO_CONSOLE_BASE_URL}}/tracing/link/all?time={{df_check_range_start}},{{df_check_range_end}}&w={{df_workspace_uuid}}&lak=Tracing&query=service:\"{{service}}\" http_status_code:{{http_status_code}} resource:\"{{resource}}\">)\n\n\n",
         "targets": [
           {
-            "dql": "eval(a/b, a=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `http_status_group` IN ['4xx', '5xx'] and `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\", b=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\")",
+            "dql": "eval(a/b, a=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `http_status_group` IN ['4xx', '5xx'] and `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\", b=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\")",
             "alias": "Result",
             "qtype": "dql"
           }
@@ -110,7 +110,7 @@
             "uuid": "f593fe07-1e97-40fe-a07f-bbccd7a6ccb9",
             "qtype": "dql",
             "query": {
-              "q": "T::RE(`.*`):(count_distinct(`trace_id`)) { `http_status_group` IN ['4xx', '5xx'] and `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`",
+              "q": "T::RE(`.*`):(count_distinct(`trace_id`)) { `http_status_group` IN ['4xx', '5xx'] and `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`, `http_status_code`",
               "code": "A",
               "fill": null,
               "type": "dql",
@@ -148,8 +148,8 @@
                   "logic": "and",
                   "value": "",
                   "values": [
-                    "/api/auth/user/login",
-                    "/api/customer/api/login/get"
+                    "/api/example/action",
+                    "/api/example/detail/{id}"
                   ]
                 }
               ],
@@ -182,7 +182,7 @@
             "uuid": "20f31c11-3cdf-4a9b-9bda-3241326beb14",
             "qtype": "dql",
             "query": {
-              "q": "T::RE(`.*`):(count_distinct(`trace_id`)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`",
+              "q": "T::RE(`.*`):(count_distinct(`trace_id`)) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`, `http_status_code`",
               "code": "B",
               "fill": null,
               "type": "dql",
@@ -208,8 +208,8 @@
                   "logic": "and",
                   "value": "",
                   "values": [
-                    "/api/auth/user/login",
-                    "/api/customer/api/login/get"
+                    "/api/example/action",
+                    "/api/example/detail/{id}"
                   ]
                 }
               ],
@@ -244,7 +244,7 @@
             "color": "",
             "qtype": "dql",
             "query": {
-              "q": "eval(a/b, a=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `http_status_group` IN ['4xx', '5xx'] and `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\", b=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\")",
+              "q": "eval(a/b, a=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `http_status_group` IN ['4xx', '5xx'] and `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\", b=\"T::RE(`.*`):(count_distinct(`trace_id`)) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`, `http_status_code`\")",
               "code": "C",
               "fill": null,
               "type": "expression",
@@ -293,13 +293,13 @@
         "message": "产品：{{project}}\n服务：{{service}}  \n接口：{{resource}} \n错误率：{{Result}}\n{% set dql_data = DQL(\"T::RE(`.*`):(`error_type`,`error_message`,`error_stack`) { `status` = 'error' and `service` = ? and `resource` = ? } \", service, resource) %}\n错误类型：{{ dql_data.error_type}}\n错误消息：{{ dql_data.error_message | limit_lines(10) }}\n错误堆栈：{{ dql_data.error_stack | limit_lines(10) }}\n详细分析链接：[查看相关链路](<{{STUDIO_CONSOLE_BASE_URL}}/tracing/link/all?time={{df_check_range_start}},{{df_check_range_end}}&w={{df_workspace_uuid}}&lak=Tracing&query=service:\"{{service}}\" status:error resource:\"{{resource}}\">)\n",
         "targets": [
           {
-            "dql": "eval(A.a1/B.b1,A=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as a1) {`status` = 'error', `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`\",B=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as b1) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`\").fill(0)",
+            "dql": "eval(A.a1/B.b1,A=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as a1) {`status` = 'error', `resource` IN ['/api/example/action', '/api/example/detail/{id}'] }  BY `project`, `env`, `service`, `resource`\",B=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as b1) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] }  BY `project`, `env`, `service`, `resource`\").fill(0)",
             "alias": "Result"
           }
         ],
         "channels": [],
         "interval": 300,
-        "windowDql": "eval(A.a1/B.b1,A=\"<window>T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as a1) {`status` = 'error', `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`</window>\",B=\"<window>T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as b1) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`</window>\").fill(0)",
+        "windowDql": "eval(A.a1/B.b1,A=\"<window>T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as a1) {`status` = 'error', `resource` IN ['/api/example/action', '/api/example/detail/{id}'] }  BY `project`, `env`, `service`, `resource`</window>\",B=\"<window>T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as b1) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] }  BY `project`, `env`, `service`, `resource`</window>\").fill(0)",
         "atAccounts": [],
         "checkerOpt": {
           "rules": [
@@ -416,7 +416,7 @@
             "uuid": "a7273232-7de2-44bf-bd94-26a3534511dd",
             "qtype": "dql",
             "query": {
-              "q": "eval(A.a1/B.b1,A=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as a1) {`status` = 'error', `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`\",B=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as b1) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] }  BY `project`, `env`, `service`, `resource`\").fill(0)",
+              "q": "eval(A.a1/B.b1,A=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as a1) {`status` = 'error', `resource` IN ['/api/example/action', '/api/example/detail/{id}'] }  BY `project`, `env`, `service`, `resource`\",B=\"T::RE(`.*`):(COUNT_DISTINCT(`trace_id`) as b1) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] }  BY `project`, `env`, `service`, `resource`\").fill(0)",
               "field": "请求错误率",
               "filters": [
                 {
@@ -427,8 +427,8 @@
                   "logic": "and",
                   "value": "",
                   "values": [
-                    "/api/auth/user/login",
-                    "/api/customer/api/login/get"
+                    "/api/example/action",
+                    "/api/example/detail/{id}"
                   ]
                 }
               ],
@@ -480,7 +480,7 @@
         "message": "产品：{{project}}\n服务：{{service}}\n请求：{{resource}}\nP99响应时间:{{Result|to_fixed(0)}}ms\n详细分析链接：[查看相关链路](<{{STUDIO_CONSOLE_BASE_URL}}/tracing/link/all?time={{df_check_range_start}},{{df_check_range_end}}&w={{df_workspace_uuid}}&lak=Tracing&query=service:\"{{service}}\" resource:\"{{resource}}\">)",
         "targets": [
           {
-            "dql": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 99)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`\")",
+            "dql": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 99)) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`\")",
             "alias": "Result",
             "qtype": "dql"
           }
@@ -575,13 +575,13 @@
             "uuid": "184de8df-3fab-4a04-bda0-3f37309daa0f",
             "qtype": "dql",
             "query": {
-              "q": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 99)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`\")",
+              "q": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 99)) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`\")",
               "code": "A",
               "type": "expression",
               "alias": "",
               "children": [
                 {
-                  "q": "T::RE(`.*`):(percentile(`duration`, 99)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`",
+                  "q": "T::RE(`.*`):(percentile(`duration`, 99)) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`",
                   "code": "A",
                   "fill": null,
                   "type": "simple",
@@ -598,8 +598,8 @@
                       "logic": "and",
                       "value": "",
                       "values": [
-                        "/api/auth/user/login",
-                        "/api/customer/api/login/get"
+                        "/api/example/action",
+                        "/api/example/detail/{id}"
                       ]
                     }
                   ],
@@ -661,7 +661,7 @@
         "message": "产品：{{project}}\n服务：{{service}}\n请求：{{resource}}\nP90响应时间:{{Result|to_fixed(0)}}ms\n详细分析链接：[查看相关链路](<{{STUDIO_CONSOLE_BASE_URL}}/tracing/link/all?time={{df_check_range_start}},{{df_check_range_end}}&w={{df_workspace_uuid}}&lak=Tracing&query=service:\"{{service}}\" resource:\"{{resource}}\">)",
         "targets": [
           {
-            "dql": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 90)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`\")",
+            "dql": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 90)) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`\")",
             "alias": "Result",
             "qtype": "dql"
           }
@@ -756,13 +756,13 @@
             "uuid": "b0f3e47e-de8b-4f0a-8a89-6f2625b237a9",
             "qtype": "dql",
             "query": {
-              "q": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 90)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`\")",
+              "q": "eval(A/1000, A=\"T::RE(`.*`):(percentile(`duration`, 90)) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`\")",
               "code": "A",
               "type": "expression",
               "alias": "",
               "children": [
                 {
-                  "q": "T::RE(`.*`):(percentile(`duration`, 90)) { `resource` IN ['/api/auth/user/login', '/api/customer/api/login/get'] } BY `project`, `env`, `service`, `resource`",
+                  "q": "T::RE(`.*`):(percentile(`duration`, 90)) { `resource` IN ['/api/example/action', '/api/example/detail/{id}'] } BY `project`, `env`, `service`, `resource`",
                   "code": "A",
                   "fill": null,
                   "type": "simple",
@@ -779,8 +779,8 @@
                       "logic": "and",
                       "value": "",
                       "values": [
-                        "/api/auth/user/login",
-                        "/api/customer/api/login/get"
+                        "/api/example/action",
+                        "/api/example/detail/{id}"
                       ]
                     }
                   ],

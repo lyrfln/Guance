@@ -2,6 +2,15 @@
 
 The generator accepts XLSX, CSV, or JSON.
 
+
+## Blank Excel Template
+
+Use [business-interface-template.xlsx](business-interface-template.xlsx) as the preferred customer-facing template. It contains:
+
+- a `关键业务接口填写模板` sheet for business-system, chain, interface, and threshold fields;
+- a `填写说明` sheet with field rules;
+- no real customer interface paths; only placeholders such as `<请填写关键接口1，...>`.
+
 ## Customer Table Columns
 
 Ask the customer to provide these columns:
@@ -11,7 +20,7 @@ Ask the customer to provide these columns:
 | Yes | `业务系统名称` | Business system name; also the only monitor tag and overall monitor suffix | `<业务系统名称>` |
 | Yes | `业务链路` | Key business chain name | `<业务链路>` |
 | Yes | `业务域` | Per-chain monitor suffix | `<业务域>` |
-| Yes | `关键接口` | One or more key API resources | `/auth/user/login;/customer/api/login/get` |
+| Yes | `关键接口` | One or more key API resources | `/api/example/action;/api/example/detail/{id}` |
 | Yes | `P90阈值(ms)` | P90 latency threshold in ms | `500` |
 | Yes | `P99阈值(ms)` | P99 latency threshold in ms | `1000` |
 | Optional | `HTTP异常率阈值` | HTTP 4xx/5xx anomaly threshold | `1` |
@@ -32,7 +41,7 @@ Either a list:
   {
     "name": "<业务链路>",
     "business": "<业务域>",
-    "routes": ["/auth/user/login", "/customer/api/login/get"],
+    "routes": ["/api/example/action", "/api/example/detail/{id}"],
     "p90_ms": 500,
     "p99_ms": 1000
   }
@@ -54,7 +63,7 @@ Or an object:
     {
       "name": "<业务链路>",
       "business": "<业务域>",
-      "routes": ["/auth/user/login", "/customer/api/login/get"],
+      "routes": ["/api/example/action", "/api/example/detail/{id}"],
       "p90_ms": 500,
       "p99_ms": 1000
     }
@@ -68,8 +77,8 @@ By default, the script prepends `/api` when the route does not already start wit
 
 Examples:
 
-- `/auth/user/login` -> `/api/auth/user/login`
-- `/api/auth/user/login` -> `/api/auth/user/login`
+- `/api/example/action` -> `/api/api/example/action`
+- `/api/api/example/action` -> `/api/api/example/action`
 
 Disable this behavior with `--no-api-prefix` if the customer's `resource` values already match the actual APM resource exactly.
 

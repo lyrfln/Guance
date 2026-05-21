@@ -31,7 +31,7 @@ Do not use it for generic component metrics that are better handled by the gener
 
 ## Required Customer Inputs
 
-Ask the customer to provide a business-system key interface table in XLSX, CSV, or JSON.
+Ask the customer to provide a business-system key interface table in XLSX, CSV, or JSON. Prefer the bundled blank Excel template: [business-interface-template.xlsx](references/business-interface-template.xlsx).
 
 Required columns / fields:
 
@@ -136,4 +136,5 @@ python mall-c-chain-monitor-generator/scripts/export_target_dql.py `
 - Operational best practices: [best-practices.md](references/best-practices.md)
 - Example chain inventory: [mall-c-chains.example.json](references/mall-c-chains.example.json)
 - Built-in reviewed template: [reviewed-4-checker-template.json](references/reviewed-4-checker-template.json)
+- Blank customer Excel template: [business-interface-template.xlsx](references/business-interface-template.xlsx)
 - Customer CSV template: [customer-interface-template.csv](references/customer-interface-template.csv)

@@ -2,7 +2,7 @@
 
 ## 1. Always Start From a Business Interface Table
 
-The customer should provide the key business interface table first. Do not batch-create monitors from guesses.
+The customer should provide the key business interface table first. Prefer sending the bundled blank template `references/business-interface-template.xlsx`. Do not batch-create monitors from guesses.
 
 Minimum table information:
 
@@ -98,3 +98,7 @@ Before customer import:
 - Threshold change: update table or CLI options, regenerate one JSON.
 - Message or rule structure change: update the reviewed template, regenerate one JSON.
 - Route matching issue: update resource values or route normalization options, regenerate one JSON.
+
+## 10. Keep Bundled Templates De-identified
+
+Do not put real customer interface paths into bundled templates. Use placeholders in template files and keep real customer data only in task-specific working outputs.
