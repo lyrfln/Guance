@@ -8,9 +8,9 @@ Ask the customer to provide these columns:
 
 | Required | Column name | Meaning | Example |
 |---:|---|---|---|
-| Yes | `业务系统名称` | Business system name; also the only monitor tag and overall monitor suffix | `傲雷商城` |
-| Yes | `业务链路` | Key business chain name | `登录链路` |
-| Yes | `业务域` | Per-chain monitor suffix | `登录业务` |
+| Yes | `业务系统名称` | Business system name; also the only monitor tag and overall monitor suffix | `<业务系统名称>` |
+| Yes | `业务链路` | Key business chain name | `<业务链路>` |
+| Yes | `业务域` | Per-chain monitor suffix | `<业务域>` |
 | Yes | `关键接口` | One or more key API resources | `/auth/user/login;/customer/api/login/get` |
 | Yes | `P90阈值(ms)` | P90 latency threshold in ms | `500` |
 | Yes | `P99阈值(ms)` | P99 latency threshold in ms | `1000` |
@@ -30,8 +30,8 @@ Either a list:
 ```json
 [
   {
-    "name": "登录链路",
-    "business": "登录业务",
+    "name": "<业务链路>",
+    "business": "<业务域>",
     "routes": ["/auth/user/login", "/customer/api/login/get"],
     "p90_ms": 500,
     "p99_ms": 1000
@@ -43,7 +43,7 @@ Or an object:
 
 ```json
 {
-  "system_name": "傲雷商城",
+  "system_name": "<业务系统名称>",
   "overall": {
     "p90_ms": 1000,
     "p99_ms": 2000,
@@ -52,8 +52,8 @@ Or an object:
   },
   "chains": [
     {
-      "name": "登录链路",
-      "business": "登录业务",
+      "name": "<业务链路>",
+      "business": "<业务域>",
       "routes": ["/auth/user/login", "/customer/api/login/get"],
       "p90_ms": 500,
       "p99_ms": 1000

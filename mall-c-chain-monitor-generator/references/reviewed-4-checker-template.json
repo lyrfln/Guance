@@ -4,7 +4,7 @@
       "jsonScript": {
         "type": "simpleCheck",
         "every": "5m",
-        "title": "{{project}}产品服务{{service}} 接口{{resource}}响应状态码{{http_status_code}}异常率告警-登录业务",
+        "title": "{{project}}产品服务{{service}} 接口{{resource}}响应状态码{{http_status_code}}异常率告警-<业务域>",
         "groupBy": [
           "project",
           "env",
@@ -270,7 +270,7 @@
       "is_disable": false,
       "tagInfo": [
         {
-          "name": "傲雷商城"
+          "name": "<业务系统名称>"
         }
       ],
       "secret": "",
@@ -283,7 +283,7 @@
       "jsonScript": {
         "type": "apmCheck",
         "every": "5m",
-        "title": "{{project}}产品服务{{service}}关键业务接口{{resource}}异常错误率告警-登录业务",
+        "title": "{{project}}产品服务{{service}}关键业务接口{{resource}}异常错误率告警-<业务域>",
         "groupBy": [
           "project",
           "env",
@@ -457,7 +457,7 @@
       "is_disable": false,
       "tagInfo": [
         {
-          "name": "傲雷商城"
+          "name": "<业务系统名称>"
         }
       ],
       "secret": "",
@@ -470,7 +470,7 @@
       "jsonScript": {
         "type": "simpleCheck",
         "every": "5m",
-        "title": "{{project}}产品服务{{service}}关键业务接口{{resource}} P99响应时间连续超过阈值-登录业务",
+        "title": "{{project}}产品服务{{service}}关键业务接口{{resource}} P99响应时间连续超过阈值-<业务域>",
         "groupBy": [
           "project",
           "env",
@@ -638,7 +638,7 @@
       "is_disable": false,
       "tagInfo": [
         {
-          "name": "傲雷商城"
+          "name": "<业务系统名称>"
         }
       ],
       "secret": "",
@@ -651,7 +651,7 @@
       "jsonScript": {
         "type": "simpleCheck",
         "every": "5m",
-        "title": "{{project}}产品服务{{service}}关键业务接口{{resource}} P90响应时间连续超过阈值-登录业务",
+        "title": "{{project}}产品服务{{service}}关键业务接口{{resource}} P90响应时间连续超过阈值-<业务域>",
         "groupBy": [
           "project",
           "env",
@@ -819,7 +819,7 @@
       "is_disable": false,
       "tagInfo": [
         {
-          "name": "傲雷商城"
+          "name": "<业务系统名称>"
         }
       ],
       "secret": "",

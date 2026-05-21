@@ -37,9 +37,9 @@ Required columns / fields:
 
 | Field | Chinese column examples | Required | Notes |
 |---|---|---:|---|
-| Business system name | `业务系统名称`, `业务系统`, `系统名称` | Yes | Used as the only monitor tag and as the overall monitor suffix, e.g. `傲雷商城`. Can also be passed by `--system-name`. |
+| Business system name | `业务系统名称`, `业务系统`, `系统名称` | Yes | Used as the only monitor tag and as the overall monitor suffix, e.g. `<业务系统名称>`. Can also be passed by `--system-name`. |
 | Business chain | `业务链路`, `关键业务链路`, `链路名称` | Yes | One chain maps to four monitors. |
-| Business suffix | `业务域`, `业务名称`, `告警业务名` | Yes | Used in per-chain monitor titles, e.g. `登录业务`. |
+| Business suffix | `业务域`, `业务名称`, `告警业务名` | Yes | Used in per-chain monitor titles, e.g. `<业务域>`. |
 | Key interfaces | `关键接口`, `接口列表`, `接口`, `routes` | Yes | Multiple interfaces can be separated by newlines, semicolons, Chinese semicolons, or commas. |
 | P90 threshold | `P90阈值(ms)`, `P90阈值`, `p90_ms` | Yes | Milliseconds. |
 | P99 threshold | `P99阈值(ms)`, `P99阈值`, `p99_ms` | Yes | Milliseconds. |
@@ -73,10 +73,10 @@ For each chain, use the chain's business suffix:
 For the overall business system, replace `<业务域>` with the business system name:
 
 ```text
-{{project}}产品服务{{service}} 接口{{resource}}响应状态码{{http_status_code}}异常率告警-傲雷商城
-{{project}}产品服务{{service}}关键业务接口{{resource}}异常错误率告警-傲雷商城
-{{project}}产品服务{{service}}关键业务接口{{resource}} P99响应时间连续超过阈值-傲雷商城
-{{project}}产品服务{{service}}关键业务接口{{resource}} P90响应时间连续超过阈值-傲雷商城
+{{project}}产品服务{{service}} 接口{{resource}}响应状态码{{http_status_code}}异常率告警-<业务系统名称>
+{{project}}产品服务{{service}}关键业务接口{{resource}}异常错误率告警-<业务系统名称>
+{{project}}产品服务{{service}}关键业务接口{{resource}} P99响应时间连续超过阈值-<业务系统名称>
+{{project}}产品服务{{service}}关键业务接口{{resource}} P90响应时间连续超过阈值-<业务系统名称>
 ```
 
 ## Tag Rule
@@ -106,10 +106,10 @@ Default one-click generation:
 ```powershell
 python mall-c-chain-monitor-generator/scripts/generate_monitors.py `
   --input customer-key-interfaces.xlsx `
-  --system-name 傲雷商城 `
-  --output output/monitor/aolai-mall-sli.json `
-  --filters-report output/monitor/aolai-mall-resource-filters.md `
-  --summary output/monitor/aolai-mall-summary.md
+  --system-name <业务系统名称> `
+  --output output/monitor/business-system-sli.json `
+  --filters-report output/monitor/business-system-resource-filters.md `
+  --summary output/monitor/business-system-summary.md
 ```
 
 Optional reviewed template override:

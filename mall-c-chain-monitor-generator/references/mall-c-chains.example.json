@@ -1,131 +1,25 @@
 {
-  "system_name": "傲雷商城",
+  "system_name": "<业务系统名称>",
   "chains": [
     {
-      "name": "登录链路",
-      "business": "登录业务",
+      "name": "<业务链路A>",
+      "business": "<业务域A>",
       "routes": [
-        "/auth/user/login",
-        "/customer/api/login/get"
+        "/api/example/action",
+        "/api/example/detail/{id}"
       ],
       "p90_ms": 500,
       "p99_ms": 1000
     },
     {
-      "name": "商品浏览链路",
-      "business": "商品浏览业务",
+      "name": "<业务链路B>",
+      "business": "<业务域B>",
       "routes": [
-        "/product/api/search",
-        "/product/api/detailInfo",
-        "/product/api/detail/{productId}",
-        "/product/api/categoryNodes"
-      ],
-      "p90_ms": 500,
-      "p99_ms": 1000
-    },
-    {
-      "name": "购物车链路",
-      "business": "购物车业务",
-      "routes": [
-        "/order/api/cart/add",
-        "/order/api/cart/synCart/{touristId}",
-        "/order/api/cart/page",
-        "/order/api/getSkuList"
-      ],
-      "p90_ms": 600,
-      "p99_ms": 1200
-    },
-    {
-      "name": "下单准备链路",
-      "business": "下单准备业务",
-      "routes": [
-        "/order/api/buyNowCheck",
-        "/customer/api/address/my",
-        "/order/api/createQuote",
-        "/order/api/getTaxPrice",
-        "/order/api/couponCodeCheck"
+        "/api/order/create",
+        "/api/order/pay"
       ],
       "p90_ms": 800,
       "p99_ms": 1500
-    },
-    {
-      "name": "下单支付链路",
-      "business": "下单支付业务",
-      "routes": [
-        "/order/api/create",
-        "/order/api/pay"
-      ],
-      "p90_ms": 1000,
-      "p99_ms": 2000
-    },
-    {
-      "name": "订单查询链路",
-      "business": "订单查询业务",
-      "routes": [
-        "/order/api/page",
-        "/order/api/getOrderDetailByOrderNo/{orderNo}"
-      ],
-      "p90_ms": 800,
-      "p99_ms": 1500
-    },
-    {
-      "name": "搜索联想链路",
-      "business": "搜索联想业务",
-      "routes": [
-        "/cache/api/searchName"
-      ],
-      "p90_ms": 300,
-      "p99_ms": 800
-    },
-    {
-      "name": "落地页内容链路",
-      "business": "落地页内容业务",
-      "routes": [
-        "/seo/api/component/getByUrlKey"
-      ],
-      "p90_ms": 700,
-      "p99_ms": 1500
-    },
-    {
-      "name": "商品口碑与推荐链路",
-      "business": "商品口碑与推荐业务",
-      "routes": [
-        "/product/api/comment/pageCommentByProduct",
-        "/product/api/recommend/listRecommendProductNew"
-      ],
-      "p90_ms": 600,
-      "p99_ms": 1200
-    },
-    {
-      "name": "资产与权益链路",
-      "business": "资产与权益业务",
-      "routes": [
-        "/marketing/api/couponInstance/list",
-        "/marketing/api/memberArea/listMemberArea",
-        "/customer/api/shoppingCard/verifyCardNo/{cardNo}"
-      ],
-      "p90_ms": 800,
-      "p99_ms": 1500
-    },
-    {
-      "name": "活动任务链路",
-      "business": "活动任务业务",
-      "routes": [
-        "/marketing/api/randomActivity/detail",
-        "/marketing/api/randomTask/execTask"
-      ],
-      "p90_ms": 1000,
-      "p99_ms": 2000
-    },
-    {
-      "name": "签到激励链路",
-      "business": "签到激励业务",
-      "routes": [
-        "/marketing/api/signInPromotion/get",
-        "/marketing/api/signInPromotion/sign"
-      ],
-      "p90_ms": 1000,
-      "p99_ms": 2000
     }
   ]
 }
